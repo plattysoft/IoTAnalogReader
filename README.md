@@ -1,6 +1,6 @@
 # IoTAnalogReader
 
-Simple project to use the PCF8591 Analog to Digital converter (driver based on the one from @davemckelvie)
+Simple Android Things project to use the PCF8591 Analog to Digital converter (driver based on the one from @davemckelvie)
 
 Designed to be used with a Rainbow HAT. Reads the value from the analog input 3 and displays the raw value on the LCD Display and uses the LED Strip as a progress bar.
 
