@@ -13,9 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.iotanalogreader;
-
-import android.support.annotation.Nullable;
+package com.plattysoft.pcf8591;
 
 import com.google.android.things.pio.I2cDevice;
 import com.google.android.things.pio.PeripheralManagerService;
@@ -27,7 +25,7 @@ import java.util.List;
  * Android Things driver for the PCF8591 Analog to Digital Converter
  * http://www.nxp.com/documents/data_sheet/PCF8591.pdf
  */
-public class Pcf8591 {
+public class Pcf8591 implements AutoCloseable {
 
     /**
      * Device Control byte values
@@ -147,6 +145,16 @@ public class Pcf8591 {
         mI2cDevice.read(buffer, buffer.length);
 
         return (buffer[1] & 0xFF);
+    }
+
+    public int setAnalogOutput(int value) throws IOException {
+        if (value < 0 || value > 255) {
+            return -1;
+        }
+        byte[] data = {(byte) ((ANALOG_OUTPUT_ENABLE | mControl) & 0xFF),
+                (byte) (value & 0xFF)};
+        mI2cDevice.write(data, 2);
+        return 0;
     }
 
     /**

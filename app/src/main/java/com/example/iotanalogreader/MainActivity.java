@@ -3,17 +3,20 @@ package com.example.iotanalogreader;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.things.contrib.driver.apa102.Apa102;
 import com.google.android.things.contrib.driver.ht16k33.AlphanumericDisplay;
 import com.google.android.things.contrib.driver.ht16k33.Ht16k33;
 import com.google.android.things.contrib.driver.rainbowhat.RainbowHat;
+import com.plattysoft.pcf8591.Pcf8591;
 
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static com.example.iotanalogreader.Pcf8591.MODE_FOUR_SINGLE_ENDED;
+import static com.plattysoft.pcf8591.Pcf8591.MODE_FOUR_SINGLE_ENDED;
+
 
 public class MainActivity extends Activity {
 
@@ -70,7 +73,7 @@ public class MainActivity extends Activity {
             public void run() {
                 readAdcAndDisplayIt();
             }
-        }, REFRESH_INTERVAL);
+        }, REFRESH_INTERVAL, REFRESH_INTERVAL);
     }
 
     private void setupLedStrip() {
@@ -94,9 +97,17 @@ public class MainActivity extends Activity {
         // Channel 0 : Built-in potenciometer (with Jumper)
         // Channel 1 : Built-in light sensor (with jumper)
         // Channel 2 : Built-in thermistor (with jumper)
-        // Channel 3 : Unassigned, used for our potenciometer
+        // Channel 3 : Unassigned, used for our potentiometer
         try {
-            int value = mPcf8591.readValue(3);
+            // Read analog input from channel 2
+            int value = mPcf8591.readValue(2);
+            Log.d("readAdcAndDisplayIt", "readValue(2): "+value);
+            // Set it as the output (which is connected ot input 3)
+            mPcf8591.setAnalogOutput(value);
+            // Read value from channel 3
+            value = mPcf8591.readValue(3);
+            Log.d("readAdcAndDisplayIt", "readValue(3): "+value);
+
             mSegment.display(value);
             // Display the new value on the led strip
             int numLeds = value * (RainbowHat.LEDSTRIP_LENGTH + 1) / 256 - 1;
