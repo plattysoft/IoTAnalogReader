@@ -151,8 +151,7 @@ public class Pcf8591 implements AutoCloseable {
         if (value < 0 || value > 255) {
             return -1;
         }
-        byte[] data = {(byte) ((ANALOG_OUTPUT_ENABLE | mControl) & 0xFF),
-                (byte) (value & 0xFF)};
+        byte[] data = {ANALOG_OUTPUT_ENABLE, (byte) (value)};
         mI2cDevice.write(data, 2);
         return 0;
     }
