@@ -94,7 +94,7 @@ public class MainActivity extends Activity {
     }
 
     private void readAdcAndDisplayIt() {
-        // Channel 0 : Built-in potenciometer (with Jumper)
+        // Channel 0 : Built-in potentiometer (with Jumper)
         // Channel 1 : Built-in light sensor (with jumper)
         // Channel 2 : Built-in thermistor (with jumper)
         // Channel 3 : Unassigned, used for our potentiometer
