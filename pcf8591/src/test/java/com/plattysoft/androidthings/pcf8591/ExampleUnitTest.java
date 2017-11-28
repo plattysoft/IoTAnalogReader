@@ -1,4 +1,4 @@
-package com.plattysoft.pcf8591;
+package com.plattysoft.androidthings.pcf8591;
 
 import org.junit.Test;
 

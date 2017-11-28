@@ -1,8 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
-apply plugin: 'maven'
-apply plugin: 'maven-publish'
 
 def versionName = '1.0'
 
@@ -61,25 +59,55 @@ bintray {
         publish = true
         version {
             name = versionName //Bintray logical version name
-//            released = //Optional - Date of the version release. 2 possible values: date in the format of 'yyyy-MM-dd'T'HH:mm:ss.SSSZZ' OR a java.util.Date instance
             vcsTag = versionName
         }
-        publications = ['PCF8591Publication']
     }
 }
 
-publishing {
-    publications {
-        PCF8591Publication (MavenPublication) {
-            pom.withXml {
-                // Iterate over the compile dependencies (we don't want the test ones), adding a <dependency> node for each
-                configurations.compile.allDependencies.each {
-                    def dependencyNode = dependenciesNode.appendNode('dependency')
-                    dependencyNode.appendNode('groupId', it.group)
-                    dependencyNode.appendNode('artifactId', it.name)
-                    dependencyNode.appendNode('version', it.version)
+install {
+    repositories.mavenInstaller {
+        // This generates POM.xml with proper parameters
+        pom {
+            project {
+                packaging 'aar'
+                artifactId 'pcf8591'
+                version = versionName
+                groupId = group
+                // Add your description here
+                name 'pcf8591'
+                description = 'ADC PCF8591 driver for Android Things'
+                url siteUrl
+
+                // Set your license
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id 'plattysoft'
+                        name 'Platty Soft'
+                        email 'raul@plattysoft.com'
+                    }
+                }
+                scm {
+                    connection gitUrl
+                    developerConnection gitUrl
+                    url siteUrl
                 }
             }
         }
     }
+}
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+    archiveName "pcf8591-${versionName}-sources.jar"
+}
+
+artifacts {
+    archives sourcesJar
 }
