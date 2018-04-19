@@ -4,6 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/IoTAnalogReader.iml" filepath="$PROJECT_DIR$/IoTAnalogReader.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hmc5883l_test/hmc5883l_test.iml" filepath="$PROJECT_DIR$/hmc5883l_test/hmc5883l_test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ledmatrixtest/ledmatrixtest.iml" filepath="$PROJECT_DIR$/ledmatrixtest/ledmatrixtest.iml" />
       <module fileurl="file://$PROJECT_DIR$/pcf8591/pcf8591.iml" filepath="$PROJECT_DIR$/pcf8591/pcf8591.iml" />
     </modules>
   </component>

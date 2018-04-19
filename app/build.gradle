@@ -25,7 +25,8 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.google.android.things.contrib:driver-rainbowhat:0.5'
-    provided 'com.google.android.things:androidthings:0.5.1-devpreview'
+    provided 'com.google.android.things:androidthings:0.6-devpreview'
+    compile 'com.plattysoft.pcf8591:pcf8591:1.0'
     testCompile 'junit:junit:4.12'
-    compile project(':pcf8591')
+//    compile project(':pcf8591')
 }

@@ -8,13 +8,16 @@ import com.google.android.things.contrib.driver.apa102.Apa102;
 import com.google.android.things.contrib.driver.ht16k33.AlphanumericDisplay;
 import com.google.android.things.contrib.driver.ht16k33.Ht16k33;
 import com.google.android.things.contrib.driver.rainbowhat.RainbowHat;
-import com.plattysoft.androidthings.pcf8591.Pcf8591;
+import com.google.android.things.pio.Gpio;
+import com.google.android.things.pio.GpioCallback;
+import com.google.android.things.pio.PeripheralManagerService;
+import com.plattysoft.pcf8591.Pcf8591;
 
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static com.plattysoft.androidthings.pcf8591.Pcf8591.MODE_FOUR_SINGLE_ENDED;
+import static com.plattysoft.pcf8591.Pcf8591.MODE_FOUR_SINGLE_ENDED;
 
 
 public class MainActivity extends Activity {
@@ -32,14 +35,40 @@ public class MainActivity extends Activity {
     int[] mColors = new int[RainbowHat.LEDSTRIP_LENGTH];
     private Timer mTimer;
 
+    private static final String MOTION_SENSOR_PORT = "GPIO6_IO13";
+    private Gpio mMotionSensor;
+
     @Override
     protected void onStart() {
         super.onStart();
 
-        setupAlphanumericDisplay();
-        setupAdc();
-        setupLedStrip();
+        PeripheralManagerService peripheralManagerService = new PeripheralManagerService();
+        try {
+            mMotionSensor = peripheralManagerService.openGpio(MOTION_SENSOR_PORT);
+            mMotionSensor.setDirection(Gpio.DIRECTION_IN);
+            mMotionSensor.setEdgeTriggerType(Gpio.EDGE_BOTH);
+            mMotionSensor.registerGpioCallback(
+                    new GpioCallback() {
+                        @Override
+                        public boolean onGpioEdge(Gpio gpio) {
+                            try {
+                                Log.e("MOTION", gpio.getName()+": "+gpio.getValue());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            return true;
+                        }
+                    }
+            );
 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+//        setupAlphanumericDisplay();
+//        setupAdc();
+//        setupLedStrip();
+//
         startTimer();
     }
 
@@ -70,7 +99,13 @@ public class MainActivity extends Activity {
         mTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                readAdcAndDisplayIt();
+                try {
+                    Log.e("MOTION", "value: "+mMotionSensor.getValue());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+//                readAdcAndDisplayIt();
             }
         }, REFRESH_INTERVAL, REFRESH_INTERVAL);
     }

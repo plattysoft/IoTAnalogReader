@@ -9,6 +9,8 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/hmc5883l_test" />
+            <option value="$PROJECT_DIR$/ledmatrixtest" />
             <option value="$PROJECT_DIR$/pcf8591" />
           </set>
         </option>

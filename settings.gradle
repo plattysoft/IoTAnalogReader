@@ -1,1 +1,1 @@
-include ':app', ':pcf8591'
+include ':app', ':pcf8591', ':ledmatrixtest', ':hmc5883l_test'
